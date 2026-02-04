@@ -2,29 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Esports Production - Final</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Esports Live Manager - Final</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Teko:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-core: #050505;
-            --bg-panel: #0f0f0f;
-            --bg-card: #141414;
-            
-            --accent-yellow: #eaff00;
-            --accent-red: #ff3333;
+            --bg-dark: #0a0a0a;
+            --bg-panel: #111111;
+            --accent-yellow: #d4ff00; /* The exact high-vis yellow */
+            --accent-red: #ff2a2a;
             --text-white: #ffffff;
-            --text-grey: #666666;
-            
             --font-head: 'Teko', sans-serif;
             --font-body: 'Rajdhani', sans-serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; outline: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
         
         body { 
             font-family: var(--font-body); 
-            background-color: var(--bg-core); 
+            background-color: var(--bg-dark); 
             color: var(--text-white); 
             height: 100vh; 
             overflow: hidden; 
@@ -34,462 +30,474 @@
         .hidden { display: none !important; }
         .teko { font-family: var(--font-head); text-transform: uppercase; }
         
-        /* --- LOGIN --- */
+        /* --- LOGIN SCREEN --- */
         #login-screen {
-            position: fixed; inset: 0; z-index: 9999;
-            background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+            position: fixed; inset: 0; z-index: 10000;
+            background: radial-gradient(circle at center, #1a1a1a, #000);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         .login-btn {
-            margin: 10px; padding: 15px 50px;
+            width: 80%; max-width: 300px; padding: 20px; margin: 10px;
             background: transparent; border: 2px solid var(--accent-yellow);
             color: var(--accent-yellow); font-family: var(--font-head);
-            font-size: 28px; font-weight: 700; letter-spacing: 2px;
-            cursor: pointer; transition: 0.2s; min-width: 300px; text-transform: uppercase;
-            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            font-size: 24px; font-weight: 700; letter-spacing: 2px;
+            cursor: pointer; text-transform: uppercase;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
         }
-        .login-btn:hover { background: var(--accent-yellow); color: black; }
+        .login-btn:active { background: var(--accent-yellow); color: black; }
 
-        /* --- ADMIN PANEL --- */
+        /* --- ADMIN PANEL (MOBILE OPTIMIZED) --- */
         #admin-view {
-            display: none; height: 100vh;
-            grid-template-columns: 320px 1fr;
-            background: #000;
+            display: none; height: 100vh; flex-direction: column;
+            background: #050505; overflow-y: auto;
         }
 
-        /* Left Sidebar (Control Room) */
-        .sidebar {
-            background: var(--bg-panel); border-right: 1px solid #222;
-            padding: 20px; display: flex; flex-direction: column; gap: 20px;
+        /* Admin Header */
+        .admin-header {
+            position: sticky; top: 0; z-index: 100;
+            background: #111; border-bottom: 2px solid var(--accent-yellow);
+            padding: 15px; display: flex; justify-content: space-between; align-items: center;
         }
-        .sidebar-title { font-size: 36px; color: var(--accent-yellow); border-bottom: 2px solid #222; margin-bottom: 10px; }
+        .admin-title { font-size: 24px; color: var(--accent-yellow); margin: 0; }
+        .admin-reset { background: #300; border: 1px solid red; color: white; padding: 5px 10px; font-size: 12px; }
+
+        /* Control Toggles (Big for Touch) */
+        .control-panel {
+            padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            background: #0f0f0f; border-bottom: 1px solid #333;
+        }
+        .toggle-btn {
+            padding: 20px; border: 1px solid #444; background: #1a1a1a;
+            color: #888; font-weight: bold; text-align: center; font-size: 16px;
+            transition: 0.2s; cursor: pointer; display: flex; flex-direction: column; gap: 5px;
+            border-radius: 4px;
+        }
+        .toggle-btn.active {
+            background: var(--accent-yellow); color: black; border-color: var(--accent-yellow);
+            box-shadow: 0 0 15px rgba(212, 255, 0, 0.2);
+        }
+        .toggle-btn span { font-size: 20px; font-family: var(--font-head); }
+
+        /* Inputs */
+        .input-row { padding: 15px; display: flex; gap: 10px; background: #0a0a0a; }
+        .admin-input {
+            flex: 1; padding: 10px; background: #111; border: 1px solid #333;
+            color: white; font-family: var(--font-body); font-size: 16px;
+        }
+
+        /* Team Editor List */
+        .team-list { padding: 15px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 50px; }
         
-        .control-box {
-            background: var(--bg-card); padding: 15px;
-            border: 1px solid #333; border-left: 4px solid var(--accent-yellow);
-        }
-        .cb-label { font-size: 14px; font-weight: bold; color: #888; margin-bottom: 10px; display: block; }
-        
-        .inp-text {
-            width: 100%; background: #000; border: 1px solid #444; color: white;
-            padding: 8px; margin-bottom: 8px; font-family: var(--font-body); font-size: 16px;
-        }
-
-        /* Toggles */
-        .toggle-wrap { 
-            display: flex; justify-content: space-between; align-items: center; 
-            background: #000; padding: 10px; margin-top: 5px; border: 1px solid #222;
-        }
-        .switch { position: relative; display: inline-block; width: 44px; height: 22px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; inset: 0; background-color: #333; transition: .3s; }
-        input:checked + .slider { background-color: var(--accent-yellow); }
-        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: #aaa; transition: .3s; }
-        input:checked + .slider:before { transform: translateX(22px); background-color: black; }
-
-        /* Right Content (Editor) */
-        .admin-content { padding: 30px; overflow-y: auto; background: var(--bg-core); }
-        .editor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 15px; }
-
-        /* Team Card */
         .team-card {
-            background: var(--bg-card); padding: 15px; border: 1px solid #333;
-            display: flex; flex-direction: column; gap: 10px;
+            background: #141414; border: 1px solid #333; padding: 12px;
+            border-left: 4px solid #444; border-radius: 4px;
         }
-        .team-card.wiped { opacity: 0.4; filter: grayscale(1); border-color: #111; }
+        /* Visual cue for wiped teams in admin */
+        .team-card.wiped { opacity: 0.5; border-left-color: var(--accent-red); }
 
-        .tc-head { display: flex; justify-content: space-between; align-items: center; }
-        .tc-rank { font-size: 24px; color: #555; font-family: var(--font-head); }
-        .tc-name { font-size: 20px; font-weight: bold; text-align: right; background: transparent; border: none; color: white; width: 120px; border-bottom: 1px solid #333; }
-        
-        .tc-stats { display: flex; gap: 5px; }
-        .stat-input { width: 100%; background: #000; border: 1px solid #333; color: var(--accent-yellow); font-size: 20px; text-align: center; font-family: var(--font-head); }
+        .tc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .tc-name { font-size: 22px; font-weight: bold; color: white; font-family: var(--font-head); letter-spacing: 1px; }
+        .tc-inputs { display: flex; gap: 5px; }
+        .num-input {
+            width: 60px; background: #000; border: 1px solid #444;
+            color: var(--accent-yellow); text-align: center; padding: 8px; font-size: 20px;
+            font-family: var(--font-head);
+        }
 
-        .player-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 5px; }
-        .p-btn {
-            background: #111; border: 1px solid #333; color: #888; padding: 8px 4px;
-            font-size: 12px; text-align: center; cursor: pointer; font-weight: 600;
+        /* Player Grid (Touch Friendly) */
+        .player-label { font-size: 10px; color: #666; margin-bottom: 4px; display: block; text-transform: uppercase; }
+        .player-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .p-chip {
+            background: #222; padding: 12px 2px; text-align: center;
+            font-size: 12px; font-weight: bold; color: #888;
+            border: 1px solid #333; cursor: pointer; border-radius: 2px;
             overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
         }
-        .p-btn:hover { background: #222; }
-        .p-btn.alive { border-bottom: 2px solid var(--accent-yellow); color: white; }
-        .p-btn.elim { background: #2a0505; color: var(--accent-red); border-bottom: 2px solid var(--accent-red); text-decoration: line-through; }
+        .p-chip.alive { background: #1a1a1a; color: white; border-bottom: 3px solid var(--accent-yellow); }
+        .p-chip.elim { background: #3a0000; color: var(--accent-red); border-bottom: 3px solid var(--accent-red); text-decoration: line-through; }
 
 
-        /* --- LIVE SCREEN --- */
-        #live-view { 
-            display: none; width: 100vw; height: 100vh; 
-            background: #000; position: relative; overflow: hidden; 
+        /* --- LIVE SCREEN (PC DISPLAY) --- */
+        #live-view {
+            display: none; width: 100vw; height: 100vh;
+            background: transparent; position: relative; overflow: hidden;
         }
-        
-        /* Waiting Message */
-        #waiting-msg {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: #333; font-family: var(--font-head); font-size: 30px; letter-spacing: 2px;
-            text-align: center;
+        /* Hidden Screen Share Trigger */
+        .ss-trigger {
+            position: absolute; top: 0; left: 0; width: 100px; height: 50px; z-index: 9999;
+            opacity: 0; cursor: pointer;
         }
+        .ss-trigger:hover { opacity: 1; background: rgba(0,0,0,0.5); color:white; font-size:10px; display: flex; align-items:center; justify-content:center;}
 
-        /* Screen Share Hover */
-        .ss-area {
-            position: absolute; top: 0; left: 0; width: 100%; height: 60px; z-index: 5000;
-            opacity: 0; transition: opacity 0.3s; background: rgba(0,0,0,0.8);
-            display: flex; justify-content: center; align-items: center;
-        }
-        #live-view:hover .ss-area { opacity: 1; }
-        .ss-btn { padding: 8px 20px; font-weight: bold; cursor: pointer; text-transform: uppercase; background: var(--accent-yellow); border: none; font-family: var(--font-head); font-size: 18px; }
-
-        /* Banner Widget */
+        /* === MATCH BANNER (Bottom Left) === */
         .banner-container {
-            position: absolute; bottom: 40px; left: 0;
-            display: flex; transform: translateX(-120%); 
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            filter: drop-shadow(5px 5px 15px black);
+            position: absolute; bottom: 40px; left: 40px;
+            display: flex; filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.8));
+            transform: translateY(150%); transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
-        .banner-container.active { transform: translateX(0); }
-        
-        .ban-icon {
-            width: 100px; height: 90px; background: #fff;
+        .banner-container.show { transform: translateY(0); }
+
+        .ban-logo-box {
+            width: 90px; height: 90px; background: white;
             display: flex; justify-content: center; align-items: center;
-            clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
+            /* The diagonal cut style from the image */
+            clip-path: polygon(0 0, 100% 0, 82% 100%, 0% 100%);
             z-index: 2;
         }
-        .ban-content {
-            height: 90px; background: #141414; color: white;
+        .ban-logo-img { width: 50px; }
+
+        .ban-info-box {
+            height: 90px; background: #1a1a1a; color: white;
             display: flex; flex-direction: column; justify-content: center;
-            padding: 0 50px 0 30px; margin-left: -20px;
-            border-right: 6px solid var(--accent-yellow);
+            padding: 0 40px 0 30px; margin-left: -20px; /* Overlap */
+            border-right: 5px solid var(--accent-yellow);
         }
-        .ban-sub { color: var(--accent-yellow); font-size: 16px; font-weight: 700; letter-spacing: 1px; line-height: 1; margin-bottom: 2px; }
-        .ban-head { font-family: var(--font-head); font-size: 64px; line-height: 0.85; font-weight: 600; }
+        .ban-sub { 
+            color: var(--accent-yellow); font-size: 14px; font-weight: 700; 
+            letter-spacing: 1px; margin-bottom: -2px; 
+        }
+        .ban-title { 
+            font-family: var(--font-head); font-size: 60px; line-height: 0.85; 
+            font-weight: 600; letter-spacing: 1px;
+        }
 
-        /* Leaderboard Widget */
+        /* === LEADERBOARD (Right Edge) === */
+        /* Exact layout from image_7a0b40.png - Right aligned vertical list */
         .lb-container {
-            position: absolute; bottom: 40px; right: 0; width: 480px;
-            background: rgba(18, 18, 18, 0.98); border-left: 5px solid var(--accent-yellow);
-            box-shadow: -10px 10px 30px rgba(0,0,0,0.9);
-            transform: translateX(120%); transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: absolute; top: 50%; right: 40px; 
+            width: 420px; /* Width matching the image */
+            transform: translateY(-50%) translateX(150%);
+            transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            box-shadow: -10px 10px 30px rgba(0,0,0,0.8);
         }
-        .lb-container.active { transform: translateX(0); }
+        .lb-container.show { transform: translateY(-50%) translateX(0); }
 
-        .lb-head {
-            background: #222; padding: 12px 20px; 
+        .lb-header {
+            background: #111; border-bottom: 2px solid #333; padding: 10px 15px;
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid #333;
         }
-        .lb-table { width: 100%; border-collapse: collapse; }
-        .lb-table th { text-align: left; color: #666; font-size: 12px; padding: 8px 15px; border-bottom: 1px solid #333; }
-        .lb-table td { padding: 8px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+        .lb-h-title { font-family: var(--font-head); font-size: 28px; color: white; margin: 0; }
+        .lb-h-live { background: var(--accent-yellow); color: black; font-weight: bold; padding: 2px 6px; font-size: 12px; }
+
+        .lb-table { width: 100%; border-collapse: collapse; background: rgba(15, 15, 15, 0.95); }
         
-        /* Animation for Rows */
-        .lb-row { opacity: 0; transform: translateX(50px); transition: 0.4s ease-out; }
-        .lb-row.slide-in { opacity: 1; transform: translateX(0); }
+        .lb-table thead tr { border-bottom: 1px solid #333; background: #1a1a1a; }
+        .lb-table th {
+            text-align: center; font-size: 11px; color: #666; padding: 8px 5px; font-weight: 700; letter-spacing: 1px;
+        }
+        .lb-table th.th-left { text-align: left; padding-left: 15px; }
+
+        /* Rows */
+        .lb-row { border-bottom: 1px solid #222; height: 48px; transition: all 0.3s; }
+        .lb-row td { vertical-align: middle; }
+        
+        /* Dim if Eliminated */
         .lb-row.wiped { opacity: 0.3; filter: grayscale(1); }
 
-        .lb-rank { font-family: var(--font-head); font-size: 26px; color: #666; width: 40px; }
-        .lb-team { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 700; letter-spacing: 1px; }
-        .lb-pts { font-family: var(--font-head); font-size: 28px; color: var(--accent-yellow); text-align: center; }
+        .col-rank { 
+            width: 40px; text-align: center; 
+            font-family: var(--font-head); font-size: 24px; color: #666; font-weight: bold; 
+        }
+        /* Top 3 Highlighting logic if needed, usually rank color differs */
+        .lb-row:nth-child(1) .col-rank { color: var(--accent-yellow); }
+
+        .col-team { text-align: left; padding-left: 10px; display: flex; align-items: center; height: 48px;}
+        .t-logo { width: 28px; height: 28px; object-fit: contain; margin-right: 12px; }
+        .t-name { font-size: 18px; font-weight: 700; letter-spacing: 1px; color: white; font-family: var(--font-head); font-size: 22px; }
         
-        .status-grp { display: flex; gap: 3px; }
-        .bar { width: 5px; height: 18px; background: white; transform: skewX(-15deg); transition: 0.2s; }
-        .bar.dead { background: var(--accent-red); opacity: 1; box-shadow: 0 0 5px var(--accent-red); }
+        .col-stat { 
+            width: 50px; text-align: center; 
+            font-family: var(--font-head); font-size: 24px; color: white; 
+        }
+        .col-pts { 
+            width: 60px; text-align: center; 
+            font-family: var(--font-head); font-size: 24px; color: var(--accent-yellow); 
+        }
+        
+        /* Status Bars (||||) */
+        .col-status { width: 60px; padding-right: 15px; }
+        .status-wrap { display: flex; gap: 4px; justify-content: flex-end; }
+        .s-bar { 
+            width: 5px; height: 20px; background: white; 
+            transform: skewX(-15deg); transition: 0.3s; 
+        }
+        .s-bar.elim { background: var(--accent-red); opacity: 1; } /* Red for dead */
 
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <h1 class="teko" style="font-size: 80px; line-height: 0.8; color: white;">ESPORTS <span style="color:var(--accent-yellow)">MANAGER</span></h1>
-        <div style="color: #666; margin-bottom: 20px;">BROADCAST SUITE</div>
-        <button class="login-btn" onclick="app.login('admin')">ADMIN CONTROL</button>
-        <button class="login-btn" onclick="app.login('live')">LIVE SCREEN</button>
+        <h1 class="teko" style="font-size: 60px; color: white;">ESPORTS <span style="color:var(--accent-yellow)">MANAGER</span></h1>
+        <div style="color:#666; margin-bottom: 20px;">FIREBASE CONNECTED</div>
+        <button class="login-btn" onclick="enterApp('admin')">ADMIN (MOBILE)</button>
+        <button class="login-btn" onclick="enterApp('live')">LIVE SCREEN (PC)</button>
     </div>
 
     <div id="admin-view">
-        <div class="sidebar">
-            <div class="sidebar-title teko">CONTROL ROOM</div>
-            
-            <div class="control-box">
-                <span class="cb-label">MATCH BANNER</span>
-                <input type="text" id="inpSub" class="inp-text" value="W4 - DAY 4 | GROUP B" oninput="app.sync()">
-                <input type="text" id="inpTitle" class="inp-text teko" style="font-size:24px; color:var(--accent-yellow)" value="MATCH 22" oninput="app.sync()">
-                
-                <div class="toggle-wrap">
-                    <span style="font-weight:700; font-size:12px;">SHOW BANNER</span>
-                    <label class="switch">
-                        <input type="checkbox" id="togBanner" onchange="app.sync()">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
+        <div class="admin-header">
+            <h2 class="admin-title teko">CONTROL ROOM</h2>
+            <button class="admin-reset" onclick="resetAll()">RESET</button>
+        </div>
 
-            <div class="control-box">
-                <span class="cb-label">LEADERBOARD</span>
-                <div class="toggle-wrap">
-                    <span style="font-weight:700; font-size:12px;">SHOW LEADERBOARD</span>
-                    <label class="switch">
-                        <input type="checkbox" id="togLB" onchange="app.sync()">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <button onclick="app.reset()" style="margin-top:20px; width:100%; padding:10px; background:#300; border:1px solid red; color:white; cursor:pointer; font-weight:bold;">RESET ALL</button>
+        <div class="control-panel">
+            <div id="btnBanner" class="toggle-btn" onclick="toggleControl('showBanner')">
+                BANNER
+                <span id="stBanner">OFF</span>
+            </div>
+            <div id="btnLB" class="toggle-btn" onclick="toggleControl('showLB')">
+                LEADERBOARD
+                <span id="stLB">OFF</span>
             </div>
         </div>
 
-        <div class="admin-content">
-            <h2 class="teko" style="margin-bottom:20px;">TEAM EDITOR</h2>
-            <div class="editor-grid" id="adminGrid"></div>
+        <div class="input-row">
+            <input id="inpSub" class="admin-input" placeholder="Subtitle" oninput="updateText()">
+            <input id="inpTitle" class="admin-input" placeholder="Title" oninput="updateText()">
         </div>
+
+        <div class="team-list" id="adminTeamList">
+            </div>
     </div>
 
     <div id="live-view">
-        <div id="waiting-msg">WAITING FOR ADMIN...</div>
-        
-        <div class="ss-area">
-            <button class="ss-btn" onclick="app.shareScreen()">[+] Start Screen Share Background</button>
-        </div>
+        <div class="ss-trigger" onclick="startScreenShare()">CLICK TO ADD BG</div>
 
         <div id="liveBanner" class="banner-container">
-            <div class="ban-icon">
-                <img src="https://cdn-icons-png.flaticon.com/512/168/168732.png" width="50">
+            <div class="ban-logo-box">
+                <img class="ban-logo-img" src="https://cdn-icons-png.flaticon.com/512/168/168732.png">
             </div>
-            <div class="ban-content">
-                <div class="ban-sub" id="outSub">SUBTITLE</div>
-                <div class="ban-head" id="outTitle">TITLE</div>
+            <div class="ban-info-box">
+                <div class="ban-sub" id="outSub">W4 - DAY 4 | GROUP B</div>
+                <div class="ban-title" id="outTitle">MATCH 22</div>
             </div>
         </div>
 
         <div id="liveLB" class="lb-container">
-            <div class="lb-head">
-                <span class="teko" style="font-size:26px; color:white;">STANDINGS</span>
-                <span style="background:var(--accent-yellow); color:black; font-weight:bold; font-size:12px; padding:2px 6px;">LIVE</span>
+            <div class="lb-header">
+                <h3 class="lb-h-title">STANDINGS</h3>
+                <span class="lb-h-live">LIVE</span>
             </div>
             <table class="lb-table">
                 <thead>
                     <tr>
-                        <th width="30">#</th>
-                        <th>TEAM</th>
-                        <th style="text-align:center">KILLS</th>
-                        <th style="text-align:center">PTS</th>
+                        <th>#</th>
+                        <th class="th-left">TEAM</th>
+                        <th>KILLS</th>
+                        <th>PTS</th>
                         <th>STATUS</th>
                     </tr>
                 </thead>
-                <tbody id="liveBody"></tbody>
+                <tbody id="liveTableBody">
+                    </tbody>
             </table>
         </div>
     </div>
 
-    <script>
-        const App = {
-            data: {
-                banner: false,
-                lb: false,
-                sub: "W4 - DAY 4 | GROUP B",
-                title: "MATCH 22",
-                teams: [
-                    { id: 1, name: 'NONX', kills: 2, points: 174, players: [{n:'Ninja',s:1}, {n:'Clutch',s:1}, {n:'Spower',s:1}, {n:'Joker',s:1}] }, 
-                    { id: 2, name: 'ZTSU', kills: 8, points: 173, players: [{n:'Mavi',s:1}, {n:'Sc0ut',s:1}, {n:'Regal',s:1}, {n:'Viper',s:1}] },
-                    { id: 3, name: 'GENS', kills: 1, points: 169, players: [{n:'Mortal',s:1}, {n:'Owais',s:1}, {n:'Max',s:1}, {n:'Franky',s:1}] },
-                    { id: 4, name: 'WF',   kills: 3, points: 165, players: [{n:'Snax',s:1}, {n:'Daljit',s:1}, {n:'Kratos',s:1}, {n:'Trance',s:1}] },
-                    { id: 5, name: 'TT',   kills: 3, points: 157, players: [{n:'Ted',s:1}, {n:'Gill',s:1}, {n:'Viru',s:1}, {n:'Antar',s:1}] },
-                    { id: 6, name: 'TKM',  kills: 1, points: 145, players: [{n:'Nova',s:1}, {n:'Iconic',s:1}, {n:'Dark',s:1}, {n:'Carry',s:1}] },
-                    { id: 7, name: 'EVOX', kills: 3, points: 130, players: [{n:'Fierce',s:1}, {n:'Sensei',s:1}, {n:'Punkk',s:1}, {n:'Immo',s:1}] },
-                    { id: 8, name: 'RIE',  kills: 0, points: 126, players: [{n:'Akshat',s:1}, {n:'Omega',s:1}, {n:'Hector',s:1}, {n:'Goblin',s:1}] },
-                ]
-            },
-            mode: null,
-            channel: new BroadcastChannel('esports_channel_final'),
+    <script type="module">
+        // --- FIREBASE SETUP ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-            init() {
-                // Listen for updates
-                this.channel.onmessage = (e) => {
-                    if (e.data.type === 'SYNC') {
-                        this.data = e.data.payload;
-                        this.render();
-                    } else if (e.data.type === 'REQUEST_SYNC' && this.mode === 'admin') {
-                        // If a new live tab opens, send it the current data
-                        this.sync(); 
-                    }
-                };
-            },
-
-            login(mode) {
-                this.mode = mode;
-                document.getElementById('login-screen').classList.add('hidden');
-                
-                if (mode === 'admin') {
-                    document.getElementById('admin-view').style.display = 'grid';
-                    // Populate inputs
-                    document.getElementById('togBanner').checked = this.data.banner;
-                    document.getElementById('togLB').checked = this.data.lb;
-                    document.getElementById('inpSub').value = this.data.sub;
-                    document.getElementById('inpTitle').value = this.data.title;
-                    this.renderAdmin();
-                } else {
-                    document.getElementById('live-view').style.display = 'block';
-                    // Request data immediately
-                    this.channel.postMessage({ type: 'REQUEST_SYNC' });
-                    this.renderLive();
-                }
-            },
-
-            sync() {
-                if(this.mode !== 'admin') return;
-                
-                // Capture Inputs
-                this.data.banner = document.getElementById('togBanner').checked;
-                this.data.lb = document.getElementById('togLB').checked;
-                this.data.sub = document.getElementById('inpSub').value;
-                this.data.title = document.getElementById('inpTitle').value;
-
-                // Send to Live
-                this.channel.postMessage({ type: 'SYNC', payload: this.data });
-                this.renderLive(); // Update admin preview logic if needed, usually mostly update admin grid
-            },
-
-            updateTeam(id, field, val) {
-                const t = this.data.teams.find(x => x.id === id);
-                t[field] = field === 'name' ? val : parseInt(val);
-                this.sync();
-            },
-
-            togglePlayer(tIdx, pIdx) {
-                const t = this.data.teams[tIdx];
-                t.players[pIdx].s = t.players[pIdx].s === 1 ? 0 : 1;
-                this.sync();
-                this.renderAdmin(); // Re-render admin to show red/strike
-            },
-
-            reset() {
-                if(confirm("Reset All?")) {
-                    location.reload(); // Simple reset
-                }
-            },
-
-            render() {
-                if (this.mode === 'admin') { /* Admin inputs don't need re-render on sync, just team grid */ }
-                if (this.mode === 'live') this.renderLive();
-            },
-
-            renderAdmin() {
-                const grid = document.getElementById('adminGrid');
-                grid.innerHTML = '';
-                
-                const sorted = [...this.data.teams].sort((a,b) => b.points - a.points);
-
-                sorted.forEach((t, i) => {
-                    // Check wipe
-                    const isWiped = t.players.every(p => p.s === 0);
-                    // Find original index for toggling to ensure we edit the correct data object
-                    const origIdx = this.data.teams.findIndex(x => x.id === t.id);
-
-                    const div = document.createElement('div');
-                    div.className = `team-card ${isWiped ? 'wiped' : ''}`;
-                    div.innerHTML = `
-                        <div class="tc-head">
-                            <span class="tc-rank">#${i+1}</span>
-                            <input class="tc-name" value="${t.name}" onchange="app.updateTeam(${t.id}, 'name', this.value)">
-                        </div>
-                        <div class="tc-stats">
-                            <input type="number" class="stat-input" value="${t.kills}" onchange="app.updateTeam(${t.id}, 'kills', this.value)" title="Kills">
-                            <input type="number" class="stat-input" style="color:var(--accent-yellow)" value="${t.points}" onchange="app.updateTeam(${t.id}, 'points', this.value)" title="Points">
-                        </div>
-                        <div class="player-list">
-                            ${t.players.map((p, pIdx) => `
-                                <div class="p-btn ${p.s===1?'alive':'elim'}" onclick="app.togglePlayer(${origIdx}, ${pIdx})">${p.n}</div>
-                            `).join('')}
-                        </div>
-                    `;
-                    grid.appendChild(div);
-                });
-            },
-
-            renderLive() {
-                // Banner
-                const ban = document.getElementById('liveBanner');
-                if (this.data.banner) {
-                    ban.classList.add('active');
-                    document.getElementById('outSub').textContent = this.data.sub;
-                    document.getElementById('outTitle').textContent = this.data.title;
-                } else {
-                    ban.classList.remove('active');
-                }
-
-                // Leaderboard
-                const lb = document.getElementById('liveLB');
-                const tbody = document.getElementById('liveBody');
-                
-                if (this.data.lb) {
-                    if (!lb.classList.contains('active')) {
-                        // First open
-                        this.buildTable(tbody);
-                        lb.classList.add('active');
-                        this.animateRows();
-                    } else {
-                        // Update in place
-                        this.buildTable(tbody);
-                        // Ensure visible
-                        const rows = tbody.querySelectorAll('.lb-row');
-                        rows.forEach(r => r.classList.add('slide-in'));
-                    }
-                    document.getElementById('waiting-msg').style.display = 'none';
-                } else {
-                    lb.classList.remove('active');
-                    document.getElementById('waiting-msg').style.display = 'block';
-                }
-            },
-
-            buildTable(tbody) {
-                tbody.innerHTML = '';
-                const sorted = [...this.data.teams].sort((a,b) => b.points - a.points);
-                
-                sorted.forEach((t, i) => {
-                    const isWiped = t.players.every(p => p.s === 0);
-                    const tr = document.createElement('tr');
-                    tr.className = `lb-row ${isWiped ? 'wiped' : ''}`;
-                    
-                    const bars = t.players.map(p => `<div class="bar ${p.s===0?'dead':''}"></div>`).join('');
-                    const logo = `https://ui-avatars.com/api/?name=${t.name}&background=random&color=fff&size=32&bold=true`;
-
-                    tr.innerHTML = `
-                        <td class="lb-rank">${i+1}</td>
-                        <td>
-                            <div class="lb-team">
-                                <img src="${logo}" width="30" style="background:#333">
-                                <span>${t.name}</span>
-                            </div>
-                        </td>
-                        <td style="text-align:center; font-size:22px; font-weight:bold">${t.kills}</td>
-                        <td class="lb-pts">${t.points}</td>
-                        <td><div class="status-grp">${bars}</div></td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            },
-
-            animateRows() {
-                const rows = document.querySelectorAll('.lb-row');
-                rows.forEach((row, i) => {
-                    setTimeout(() => row.classList.add('slide-in'), 100 + (i * 50));
-                });
-            },
-
-            async shareScreen() {
-                try {
-                    const s = await navigator.mediaDevices.getDisplayMedia({video:true});
-                    const v = document.createElement('video');
-                    v.srcObject = s;
-                    v.autoplay = true;
-                    v.style.cssText = "position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-1;";
-                    const c = document.getElementById('live-view');
-                    if(c.querySelector('video')) c.querySelector('video').remove();
-                    c.appendChild(v);
-                } catch(e) { console.error(e); }
-            }
+        const firebaseConfig = {
+            apiKey: "AIzaSyBDyzJM5aEs0ZA08Q4vMefAUDp6Vjk-rUM",
+            authDomain: "esports-manager-ab9d4.firebaseapp.com",
+            projectId: "esports-manager-ab9d4",
+            storageBucket: "esports-manager-ab9d4.firebasestorage.app",
+            messagingSenderId: "191185640988",
+            appId: "1:191185640988:web:55ebfe87c539afc48089d9",
+            measurementId: "G-CHPV3244NM"
         };
 
-        // Init
-        window.app = App;
-        App.init();
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // --- DATA DEFAULTS ---
+        const DEFAULT_TEAMS = [
+            { id: 1, name: 'NONX', kills: 2, points: 174, p: [1,1,1,1] }, 
+            { id: 2, name: 'ZTSU', kills: 8, points: 173, p: [1,1,1,1] },
+            { id: 3, name: 'GENS', kills: 1, points: 169, p: [1,1,0,0] },
+            { id: 4, name: 'WF',   kills: 3, points: 165, p: [1,1,1,1] },
+            { id: 5, name: 'TT',   kills: 3, points: 157, p: [0,1,1,1] },
+            { id: 6, name: 'TKM',  kills: 1, points: 145, p: [1,1,1,1] },
+            { id: 7, name: 'EVOX', kills: 3, points: 130, p: [1,0,0,0] },
+            { id: 8, name: 'RIE',  kills: 0, points: 126, p: [1,1,1,1] },
+            { id: 9, name: 'SNWY', kills: 7, points: 124, p: [1,1,1,1] },
+            { id: 10, name: 'VANG',kills: 1, points: 120, p: [0,0,0,0] },
+            { id: 11, name: 'H4K', kills: 4, points: 111, p: [1,1,1,1] },
+            { id: 12, name: 'XE',  kills: 9, points: 107, p: [1,1,1,1] },
+            { id: 13, name: '4TR', kills: 5, points: 104, p: [1,1,1,1] },
+            { id: 14, name: 'LSDE',kills: 2, points: 103, p: [1,1,1,1] },
+            { id: 15, name: 'KE',  kills: 1, points: 91,  p: [1,0,1,1] },
+            { id: 16, name: 'TWOB',kills: 4, points: 72,  p: [1,1,1,1] },
+        ];
+
+        let state = {};
+
+        // --- APP LOGIC ---
+        window.enterApp = (mode) => {
+            document.getElementById('login-screen').classList.add('hidden');
+            if(mode === 'admin') document.getElementById('admin-view').style.display = 'flex';
+            if(mode === 'live') document.getElementById('live-view').style.display = 'block';
+            
+            // Listen to DB
+            onValue(ref(db), (snap) => {
+                const val = snap.val();
+                if(!val) {
+                    window.resetAll(); // Init if empty
+                } else {
+                    state = val;
+                    if(mode === 'admin') renderAdmin();
+                    if(mode === 'live') renderLive();
+                }
+            });
+        }
+
+        // --- ADMIN FUNCTIONS ---
+        window.toggleControl = (key) => {
+            update(ref(db, 'controls'), { [key]: !state.controls[key] });
+        }
+
+        window.updateText = () => {
+            const sub = document.getElementById('inpSub').value;
+            const title = document.getElementById('inpTitle').value;
+            update(ref(db, 'controls'), { sub: sub, title: title });
+        }
+
+        window.updateScore = (idx, field, val) => {
+            set(ref(db, `teams/${idx}/${field}`), parseInt(val));
+        }
+
+        window.togglePlayer = (teamIdx, pIdx) => {
+            const curr = state.teams[teamIdx].p[pIdx];
+            const newVal = curr === 1 ? 0 : 1; // 1=Alive, 0=Elim
+            set(ref(db, `teams/${teamIdx}/p/${pIdx}`), newVal);
+        }
+
+        window.resetAll = () => {
+            if(confirm("Reset everything?")) {
+                set(ref(db), {
+                    controls: { showBanner: false, showLB: false, sub: "W4 - DAY 4 | GROUP B", title: "MATCH 22" },
+                    teams: DEFAULT_TEAMS
+                });
+            }
+        }
+
+        function renderAdmin() {
+            // Update Toggles
+            const btnBanner = document.getElementById('btnBanner');
+            const btnLB = document.getElementById('btnLB');
+            
+            if(state.controls.showBanner) { btnBanner.classList.add('active'); btnBanner.querySelector('span').innerText = "ON"; }
+            else { btnBanner.classList.remove('active'); btnBanner.querySelector('span').innerText = "OFF"; }
+
+            if(state.controls.showLB) { btnLB.classList.add('active'); btnLB.querySelector('span').innerText = "ON"; }
+            else { btnLB.classList.remove('active'); btnLB.querySelector('span').innerText = "OFF"; }
+
+            // Sync Inputs only if not focused
+            if(document.activeElement.id !== 'inpSub') document.getElementById('inpSub').value = state.controls.sub;
+            if(document.activeElement.id !== 'inpTitle') document.getElementById('inpTitle').value = state.controls.title;
+
+            // Render Teams
+            const list = document.getElementById('adminTeamList');
+            list.innerHTML = '';
+            
+            // Sort by points desc
+            const sortedIndices = state.teams.map((t, i) => ({...t, origIdx: i})).sort((a,b) => b.points - a.points);
+
+            sortedIndices.forEach((t) => {
+                const isWiped = t.p.every(s => s === 0);
+                const card = document.createElement('div');
+                card.className = `team-card ${isWiped ? 'wiped' : ''}`;
+                
+                let pHtml = '';
+                t.p.forEach((status, pIdx) => {
+                    pHtml += `<div class="p-chip ${status===1?'alive':'elim'}" onclick="togglePlayer(${t.origIdx}, ${pIdx})">P${pIdx+1}</div>`;
+                });
+
+                card.innerHTML = `
+                    <div class="tc-header">
+                        <span class="tc-name">#${sortedIndices.indexOf(t)+1} ${t.name}</span>
+                        <div class="tc-inputs">
+                            <input class="num-input" value="${t.kills}" onchange="updateScore(${t.origIdx}, 'kills', this.value)">
+                            <input class="num-input" style="color:var(--accent-yellow)" value="${t.points}" onchange="updateScore(${t.origIdx}, 'points', this.value)">
+                        </div>
+                    </div>
+                    <span class="player-label">Tap Player to Eliminate</span>
+                    <div class="player-grid">${pHtml}</div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // --- LIVE FUNCTIONS ---
+        function renderLive() {
+            // Banner
+            const banner = document.getElementById('liveBanner');
+            if(state.controls.showBanner) {
+                banner.classList.add('show');
+                document.getElementById('outSub').innerText = state.controls.sub;
+                document.getElementById('outTitle').innerText = state.controls.title;
+            } else {
+                banner.classList.remove('show');
+            }
+
+            // Leaderboard
+            const lb = document.getElementById('liveLB');
+            if(state.controls.showLB) {
+                lb.classList.add('show');
+            } else {
+                lb.classList.remove('show');
+            }
+
+            // Render Table
+            const tbody = document.getElementById('liveTableBody');
+            tbody.innerHTML = '';
+            
+            const sorted = state.teams.map(t => t).sort((a,b) => b.points - a.points);
+
+            sorted.forEach((t, i) => {
+                // Check if wiped
+                const isWiped = t.p.every(status => status === 0);
+                const tr = document.createElement('tr');
+                tr.className = `lb-row ${isWiped ? 'wiped' : ''}`;
+                
+                // Status Bars Logic
+                let barsHtml = '';
+                t.p.forEach(status => {
+                    // White if alive (1), Red if eliminated (0)
+                    barsHtml += `<div class="s-bar ${status===0?'elim':''}"></div>`;
+                });
+
+                // Logo Placeholder logic
+                const logoUrl = `https://ui-avatars.com/api/?name=${t.name}&background=333&color=fff&size=64&bold=true`;
+
+                tr.innerHTML = `
+                    <td class="col-rank">${i+1}</td>
+                    <td class="col-team">
+                        <img src="${logoUrl}" class="t-logo">
+                        <span class="t-name">${t.name}</span>
+                    </td>
+                    <td class="col-stat">${t.kills}</td>
+                    <td class="col-pts">${t.points}</td>
+                    <td class="col-status">
+                        <div class="status-wrap">${barsHtml}</div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.startScreenShare = async () => {
+            try {
+                const stream = await navigator.mediaDevices.getDisplayMedia({video:true});
+                const v = document.createElement('video');
+                v.srcObject = stream;
+                v.autoplay = true;
+                v.style.cssText = "position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-1;";
+                document.getElementById('live-view').appendChild(v);
+            } catch(e) { console.error(e); }
+        }
 
     </script>
 </body>
