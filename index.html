@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Esports Production Suite (Cloud)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esports Production - Final Layout</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Teko:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -13,265 +13,271 @@
 
     <style>
         :root {
-            --bg-core: #050505;
+            --accent-yellow: #d4ff00; /* Exact color from screenshot */
+            --accent-red: #ff2a2a;
+            --bg-dark: #080808;
             --bg-panel: #111;
-            --accent-yellow: #eaff00;
-            --accent-red: #ff3333;
-            --text-white: #ffffff;
-            --font-head: 'Teko', sans-serif;
-            --font-body: 'Rajdhani', sans-serif;
+            --border-color: #333;
+            --text-main: #fff;
+            --text-dim: #888;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; outline: none; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; user-select: none; }
         
         body { 
-            font-family: var(--font-body); 
-            background-color: var(--bg-core); 
-            color: var(--text-white); 
-            height: 100dvh; 
+            font-family: 'Rajdhani', sans-serif; 
+            background-color: var(--bg-dark); 
+            color: var(--text-main); 
+            height: 100vh; 
             overflow: hidden; 
         }
 
         .hidden { display: none !important; }
 
-        /* --- 1. LOGIN SCREEN --- */
+        /* --- LOGIN SCREEN --- */
         #login-screen {
             position: fixed; inset: 0; z-index: 99999;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+            background: #050505;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 20px; text-align: center;
         }
-        
-        .logo-main { font-family: 'Teko'; font-size: 80px; color: white; line-height: 0.8; margin-bottom: 10px; }
-        .logo-sub { color: #666; margin-bottom: 40px; letter-spacing: 2px; }
-        
+        .login-box { text-align: center; }
         .login-btn {
-            margin: 10px; padding: 20px 40px; width: 100%; max-width: 320px;
-            background: rgba(234, 255, 0, 0.05); border: 2px solid var(--accent-yellow);
-            color: var(--accent-yellow); font-family: var(--font-head);
-            font-size: 24px; font-weight: 700; letter-spacing: 2px;
-            cursor: pointer; transition: 0.2s; text-transform: uppercase;
-            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
-            display: flex; align-items: center; justify-content: center; gap: 15px;
+            background: transparent; border: 2px solid var(--accent-yellow); color: var(--accent-yellow);
+            padding: 15px 40px; font-family: 'Teko'; font-size: 24px; letter-spacing: 1px;
+            cursor: pointer; margin: 10px; transition: 0.2s; text-transform: uppercase;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
         }
-        .login-btn:hover { background: var(--accent-yellow); color: black; box-shadow: 0 0 25px rgba(234, 255, 0, 0.4); }
-        .login-btn:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+        .login-btn:hover { background: var(--accent-yellow); color: black; }
 
-        #system-log {
-            margin-top: 30px; font-size: 12px; color: #444; font-family: monospace;
-            background: #000; padding: 10px; border: 1px solid #222; border-radius: 4px;
-            width: 100%; max-width: 400px; height: 100px; overflow-y: auto; text-align: left;
-        }
+        /* --- ADMIN LAYOUT (GRID SYSTEM) --- */
+        #admin-view { display: none; height: 100vh; display: flex; }
 
-        /* --- 2. ADMIN PANEL --- */
-        #admin-view { display: none; height: 100dvh; background: #000; flex-direction: row; }
-        
-        /* Sidebar */
+        /* 1. SIDEBAR */
         .sidebar {
-            width: 80px; background: var(--bg-panel); border-right: 1px solid #222;
-            display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 15px; flex-shrink: 0;
+            width: 90px; background: #0f0f0f; border-right: 1px solid var(--border-color);
+            display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 15px;
         }
-        .nav-tile {
-            width: 60px; height: 60px; background: #080808; border: 1px solid #333;
+        .nav-item {
+            width: 70px; height: 70px; background: #1a1a1a; border: 1px solid var(--border-color); border-radius: 4px;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            cursor: pointer; border-radius: 6px; transition: 0.2s; color: #666;
+            cursor: pointer; color: var(--text-dim); transition: 0.2s;
         }
-        .nav-tile.active { background: var(--accent-yellow); color: black; border-color: var(--accent-yellow); }
-
-        /* Main Content */
-        .admin-main { flex: 1; background: #050505; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        .nav-item i { font-size: 24px; margin-bottom: 5px; }
+        .nav-item span { font-size: 10px; font-weight: bold; line-height: 1; text-align: center; }
         
-        #status-bar {
-            height: 30px; background: #080808; border-bottom: 1px solid #222;
-            display: flex; align-items: center; justify-content: flex-end; padding: 0 15px;
-            font-size: 12px; font-weight: bold; color: #444; gap: 10px;
+        /* Active State (Yellow Box) */
+        .nav-item.active { background: var(--accent-yellow); color: black; border-color: var(--accent-yellow); }
+        .nav-item:hover:not(.active) { border-color: #666; color: white; }
+
+        /* 2. MAIN CONTENT AREA */
+        .main-content { flex: 1; padding: 30px; display: flex; gap: 30px; overflow: hidden; }
+
+        /* LEFT SIDE: PREVIEW */
+        .preview-section { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        
+        .preview-box {
+            width: 100%; aspect-ratio: 16/9; background: black; border: 1px solid var(--border-color);
+            position: relative; overflow: hidden; display: flex; justify-content: center; align-items: center;
         }
-        .status-dot { width: 8px; height: 8px; background: #333; border-radius: 50%; }
-        .status-dot.online { background: #0f0; box-shadow: 0 0 5px #0f0; }
-
-        /* Responsive Columns */
-        #section-control { padding: 15px; height: calc(100% - 30px); display: flex; gap: 15px; overflow-y: auto; }
-        
-        @media (max-width: 900px) {
-            #admin-view { flex-direction: column; }
-            .sidebar { width: 100%; height: 60px; flex-direction: row; border-right: none; border-bottom: 1px solid #222; padding: 0 10px; justify-content: space-around; }
-            .nav-tile { width: 50px; height: 50px; }
-            #section-control { flex-direction: column; }
-            .col-preview { height: 250px; flex: none !important; margin-bottom: 10px; }
+        .preview-label {
+            position: absolute; top: 15px; left: 15px; font-weight: bold; color: #666; font-size: 12px; letter-spacing: 1px; z-index: 10;
         }
-
-        .col-preview { flex: 3; background: #0e0e0e; border: 1px solid #222; border-radius: 4px; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        .col-controls { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 15px; }
-
-        /* Preview Monitor */
-        .preview-header { padding: 8px 12px; background: #151515; border-bottom: 1px solid #222; display: flex; justify-content: space-between; align-items: center; }
-        .preview-stage-container { flex: 1; position: relative; background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; }
-        .stage-scaler { width: 1920px; height: 1080px; background: radial-gradient(circle, #1a1a1a 0%, #000 100%); position: absolute; transform-origin: center; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
-
-        /* Video Elements */
-        video.bg-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
-        
-        #btn-connect-preview {
-            position: absolute; z-index: 100;
-            background: rgba(0,0,0,0.9); border: 2px solid var(--accent-yellow); color: var(--accent-yellow);
-            padding: 15px 30px; cursor: pointer; font-family: var(--font-head); font-size: 20px; letter-spacing: 1px;
-            top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 4px;
+        .live-tag {
+            position: absolute; top: 15px; right: 15px; background: var(--accent-red); color: white;
+            font-weight: bold; font-size: 10px; padding: 2px 6px; border-radius: 2px; z-index: 10;
         }
-        #btn-connect-preview:hover { background: var(--accent-yellow); color: black; }
-
-        /* Controls */
-        .panel { background: #111; border: 1px solid #222; padding: 15px; border-radius: 4px; }
-        .panel-h { color: var(--accent-yellow); font-family: var(--font-head); font-size: 18px; margin-bottom: 10px; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        .inp-field { width: 100%; background: #000; border: 1px solid #333; color: white; padding: 10px; font-family: var(--font-body); font-size: 16px; border-radius: 4px; margin-bottom: 10px; }
         
-        .toggle-btn {
+        /* The Scaled Stage */
+        .stage-scaler {
+            width: 1920px; height: 1080px; background: #111;
+            position: absolute; transform-origin: center;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+        #admin-video-feed { width: 100%; height: 100%; object-fit: cover; }
+
+        /* RIGHT SIDE: CONTROLS */
+        .controls-section { width: 350px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0; }
+
+        /* Control Panels */
+        .control-panel { background: transparent; border: 1px solid var(--border-color); padding: 0; }
+        .cp-header {
+            color: var(--accent-yellow); font-family: 'Teko'; font-size: 22px; letter-spacing: 1px;
+            padding: 10px 15px; border-bottom: 1px solid var(--border-color); text-transform: uppercase;
+        }
+        .cp-body { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
+
+        /* Inputs */
+        .input-group { margin-bottom: 5px; }
+        .input-label { display: block; font-size: 11px; color: #666; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; }
+        .styled-input {
+            width: 100%; background: #050505; border: 1px solid #333; color: white;
+            padding: 10px; font-family: 'Rajdhani'; font-size: 16px; transition: 0.2s;
+        }
+        .styled-input:focus { border-color: var(--accent-yellow); }
+
+        /* Toggles */
+        .toggle-row {
             display: flex; justify-content: space-between; align-items: center;
-            background: #080808; border: 1px solid #333; padding: 12px; margin-bottom: 8px;
-            cursor: pointer; border-radius: 4px; transition: 0.2s;
+            background: #050505; border: 1px solid #333; padding: 12px 15px; cursor: pointer; transition: 0.2s;
         }
-        .toggle-btn.active { border-color: var(--accent-yellow); background: rgba(234, 255, 0, 0.1); }
-        .t-stat { font-weight: bold; color: #444; }
-        .toggle-btn.active .t-stat { color: var(--accent-yellow); }
+        .toggle-row:hover { border-color: #555; }
+        .toggle-row.active { border-color: var(--accent-yellow); background: rgba(212, 255, 0, 0.05); }
+        .t-label { font-weight: bold; font-size: 14px; text-transform: uppercase; }
+        .t-state { font-weight: bold; color: #444; }
+        .toggle-row.active .t-state { color: var(--accent-yellow); }
 
-        /* Teams Editor */
-        #section-leaderboard { padding: 15px; display: none; overflow-y: auto; height: calc(100% - 30px); }
-        .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
-        .t-card { background: #141414; border: 1px solid #333; padding: 10px; border-left: 3px solid #333; display: flex; flex-direction: column; gap: 8px; }
-        .t-card.wiped { opacity: 0.5; border-left-color: var(--accent-red); filter: grayscale(1); }
-        
-        .tc-top { display: flex; justify-content: space-between; align-items: center; }
-        .tc-name { background: transparent; border: none; border-bottom: 1px solid #333; color: white; width: 120px; font-weight: bold; text-align: right; }
-        
-        .tc-mid { display: flex; gap: 5px; }
-        .sc-box { flex: 1; display: flex; flex-direction: column; }
-        .sc-val { background: #000; border: 1px solid #333; color: var(--accent-yellow); text-align: center; font-family: var(--font-head); font-size: 18px; padding: 2px; }
-
-        .tc-bot { display: flex; gap: 2px; }
-        .p-btn { flex: 1; background: #222; border: 1px solid #333; color: #666; font-size: 10px; text-align: center; cursor: pointer; padding: 5px 0; font-weight: bold; }
-        .p-btn.alive { color: white; background: #111; border-bottom: 2px solid var(--accent-yellow); }
-        .p-btn.dead { background: #300; color: var(--accent-red); text-decoration: line-through; border-color: #500; }
-
-        /* --- 3. LIVE OUTPUT --- */
-        #live-view { display: none; width: 100vw; height: 100dvh; background: #000; position: fixed; top:0; left:0; z-index: 9000; justify-content: center; align-items: center; }
-        
-        #btn-start-live {
-            z-index: 9999;
-            background: #000; color: var(--accent-yellow); border: 2px solid var(--accent-yellow);
-            padding: 30px 50px; font-family: var(--font-head); font-size: 40px; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 2px;
-            animation: pulse 2s infinite;
+        /* Red Button */
+        .btn-reset {
+            width: 100%; background: #2a0000; border: 1px solid #500; color: #ff5555;
+            padding: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 10px;
         }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(234, 255, 0, 0.4); } 70% { box-shadow: 0 0 0 20px rgba(0,0,0,0); } 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); } }
+        .btn-reset:hover { background: #400000; color: white; }
 
-        /* --- 4. GRAPHICS OVERLAYS --- */
-        .graphics-layer { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
+        /* Connect Button Overlay */
+        .connect-overlay {
+            position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; z-index: 20; background: rgba(0,0,0,0.7);
+        }
+        .btn-connect {
+            background: black; border: 1px solid var(--accent-yellow); color: var(--accent-yellow);
+            padding: 10px 20px; cursor: pointer; font-weight: bold; letter-spacing: 1px;
+        }
 
+        /* --- LIVE VIEW --- */
+        #live-view { position: fixed; inset: 0; background: black; z-index: 9999; display: none; }
+        #live-video-feed { width: 100%; height: 100%; object-fit: cover; }
+        .btn-live-start {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            padding: 20px 40px; font-size: 24px; background: black; border: 2px solid var(--accent-yellow);
+            color: var(--accent-yellow); cursor: pointer; z-index: 100;
+        }
+
+        /* --- GRAPHICS (OVERLAYS) --- */
+        .gfx-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+        
         /* Banner */
-        .gfx-banner { position: absolute; bottom: 60px; left: 60px; display: flex; transform: translateX(-150%); transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1); }
-        .gfx-banner.show { transform: translateX(0); }
-        .ban-box { width: 100px; height: 80px; background: white; display: flex; justify-content: center; align-items: center; clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%); z-index: 2; }
-        .ban-txt { height: 80px; background: #0f0f0f; display: flex; flex-direction: column; justify-content: center; padding: 0 40px 0 20px; margin-left: -20px; border-right: 4px solid var(--accent-yellow); z-index: -1; }
-        .b-sub { color: var(--accent-yellow); font-size: 14px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; margin-bottom: -4px; }
-        .b-main { color: white; font-family: var(--font-head); font-size: 48px; line-height: 1; }
+        .banner-gfx {
+            position: absolute; bottom: 80px; left: 80px; display: flex;
+            transform: translateX(-120%); transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .banner-gfx.visible { transform: translateX(0); }
+        .ban-icon { width: 100px; height: 80px; background: white; display: flex; justify-content: center; align-items: center; clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%); }
+        .ban-content { height: 80px; background: #111; display: flex; flex-direction: column; justify-content: center; padding: 0 50px 0 20px; margin-left: -20px; border-right: 5px solid var(--accent-yellow); z-index: -1; }
+        .ban-sub { color: var(--accent-yellow); font-weight: bold; font-size: 14px; text-transform: uppercase; margin-bottom: -3px; }
+        .ban-main { color: white; font-family: 'Teko'; font-size: 50px; line-height: 0.8; }
 
         /* Leaderboard */
-        .gfx-lb { position: absolute; bottom: 60px; right: 60px; width: 300px; background: rgba(15,15,15,0.95); border-left: 4px solid var(--accent-yellow); display: flex; flex-direction: column; transform: translateX(150%); transition: transform 0.5s cubic-bezier(0.2, 1, 0.3, 1); }
-        .gfx-lb.show { transform: translateX(0); }
-        .lb-h { background: #222; padding: 8px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
-        .lb-title { color: white; font-family: var(--font-head); font-size: 22px; }
-        .lb-tag { background: var(--accent-red); color: white; font-size: 10px; padding: 1px 5px; font-weight: bold; border-radius: 2px; }
-        .lb-tab { width: 100%; border-collapse: collapse; }
-        .lb-tab th { text-align: center; color: #888; font-size: 10px; padding: 4px 0; border-bottom: 1px solid #333; }
-        .lb-tab td { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .lb-r { opacity: 0; transform: translateX(20px); transition: 0.3s; }
-        .lb-r.in { opacity: 1; transform: translateX(0); }
-        .lb-r.out { opacity: 0.4; filter: grayscale(1); }
-        .s-bars { display: flex; gap: 2px; justify-content: center; }
-        .bar { width: 3px; height: 12px; background: white; transform: skewX(-15deg); }
-        .bar.dead { background: var(--accent-red); opacity: 0.5; }
-
-        @media (max-width: 900px) {
-            .gfx-banner, .gfx-lb { transform: scale(0.7) !important; transform-origin: bottom center; left: auto; right: auto; bottom: 10px; }
-            .gfx-banner.show { transform: scale(0.7) translateX(0) !important; left: 10px; }
-            .gfx-lb.show { transform: scale(0.7) translateX(0) !important; right: 10px; }
+        .lb-gfx {
+            position: absolute; bottom: 80px; right: 80px; width: 320px;
+            background: rgba(15, 15, 15, 0.95); border-left: 4px solid var(--accent-yellow);
+            display: flex; flex-direction: column; transform: translateX(120%); transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
+        .lb-gfx.visible { transform: translateX(0); }
+        .lb-header { background: #222; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+        .lb-title { font-family: 'Teko'; font-size: 24px; color: white; }
+        .lb-badge { background: var(--accent-red); color: white; font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 2px; }
+        .lb-table { width: 100%; border-collapse: collapse; }
+        .lb-table th { color: #666; font-size: 10px; padding: 5px 0; border-bottom: 1px solid #333; }
+        .lb-table td { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: center; color: white; font-weight: bold;}
+        .lb-row { opacity: 0; transform: translateX(20px); transition: 0.3s; }
+        .lb-row.show { opacity: 1; transform: translateX(0); }
+        .lb-row.wiped { opacity: 0.4; filter: grayscale(1); }
+        .s-dots { display: flex; gap: 2px; justify-content: center; }
+        .dot { width: 3px; height: 12px; background: white; transform: skewX(-15deg); }
+        .dot.out { background: var(--accent-red); opacity: 0.5; }
+
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <h1 class="logo-main">ESPORTS <span style="color:var(--accent-yellow)">PRO</span></h1>
-        <div class="logo-sub">FIREBASE PRODUCTION CLOUD</div>
-        
-        <button id="btn-login-admin" class="login-btn" disabled>
-            <i class="fa-solid fa-spinner fa-spin"></i> Loading...
-        </button>
-        <button id="btn-login-live" class="login-btn" disabled>
-            <i class="fa-solid fa-spinner fa-spin"></i> Loading...
-        </button>
-
-        <div id="system-log">System: Initializing...<br></div>
+        <div class="login-box">
+            <h1 style="font-family:'Teko'; font-size:80px; color:white; line-height:0.8; margin-bottom:10px;">ESPORTS <span style="color:var(--accent-yellow)">PRO</span></h1>
+            <div style="color:#666; margin-bottom:40px; letter-spacing:2px;">PRODUCTION SUITE V9</div>
+            <button class="login-btn" onclick="app.enter('admin')">ADMIN PANEL</button>
+            <button class="login-btn" onclick="app.enter('live')">LIVE SCREEN</button>
+        </div>
     </div>
 
-    <div id="admin-view">
+    <div id="admin-view" style="display:none;">
         <div class="sidebar">
-            <div class="nav-tile active" id="btn-tab-ctrl"><i class="fa-solid fa-sliders"></i><span>CONTROL</span></div>
-            <div class="nav-tile" id="btn-tab-team"><i class="fa-solid fa-users"></i><span>TEAMS</span></div>
-            <div class="nav-tile" id="btn-exit" style="margin-top:auto; border-color:#500; color:#faa;"><i class="fa-solid fa-power-off"></i><span>EXIT</span></div>
+            <div class="nav-item active" onclick="app.switchTab('control')">
+                <i class="fa-solid fa-sliders"></i>
+                <span>CONTROL<br>ROOM</span>
+            </div>
+            <div class="nav-item" onclick="app.switchTab('teams')">
+                <i class="fa-solid fa-users"></i>
+                <span>TEAMS<br>EDITOR</span>
+            </div>
         </div>
 
-        <div class="admin-main">
-            <div id="status-bar">
-                <span id="status-text">CONNECTING...</span>
-                <div id="status-dot" class="status-dot"></div>
-            </div>
-
-            <div id="section-control">
-                <div class="col-preview">
-                    <div class="preview-header"><span style="color:#aaa; font-size:12px; font-weight:bold;">PREVIEW</span><span class="live-tag">LIVE</span></div>
-                    <div class="preview-stage-container" id="preview-container">
-                        <button id="btn-connect-preview"><i class="fa-solid fa-link"></i> CONNECT PREVIEW</button>
-                        <div class="stage-scaler" id="preview-stage"></div>
-                    </div>
-                </div>
-
-                <div class="col-controls">
-                    <div class="panel">
-                        <div class="panel-h">MATCH INFO</div>
-                        <input id="inp-sub" class="inp-field" placeholder="Subtitle">
-                        <input id="inp-title" class="inp-field" placeholder="Main Title">
-                        <div class="toggle-btn" id="tog-banner"><span class="t-txt">SHOW BANNER</span><span class="t-stat">OFF</span></div>
+        <div class="main-content">
+            
+            <div class="preview-section" id="sec-preview">
+                <div class="preview-box" id="preview-container">
+                    <div class="preview-label">PROGRAM PREVIEW</div>
+                    <div class="live-tag">LIVE</div>
+                    
+                    <div class="connect-overlay" id="preview-overlay">
+                        <button class="btn-connect" onclick="app.startPreviewSource()">
+                            <i class="fa-solid fa-link"></i> CONNECT PREVIEW SOURCE
+                        </button>
                     </div>
 
-                    <div class="panel">
-                        <div class="panel-h">LEADERBOARD</div>
-                        <div class="toggle-btn" id="tog-lb"><span class="t-txt">SHOW LEADERBOARD</span><span class="t-stat">OFF</span></div>
-                        <button id="btn-reset" style="margin-top:15px; width:100%; padding:15px; background:#300; color:#faa; border:1px solid #500; font-weight:bold; cursor:pointer;">RESET ALL DATA</button>
-                    </div>
+                    <div class="stage-scaler" id="preview-stage">
+                        </div>
                 </div>
             </div>
 
-            <div id="section-leaderboard">
-                <div class="team-grid" id="editor-grid"></div>
+            <div class="controls-section" id="sec-controls">
+                
+                <div class="control-panel">
+                    <div class="cp-header">MATCH SETTINGS</div>
+                    <div class="cp-body">
+                        <div class="input-group">
+                            <span class="input-label">SUBTITLE (GROUP/DAY)</span>
+                            <input id="inp-sub" class="styled-input" value="W4 - DAY 4 | GROUP B" oninput="app.sync()">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-label">MAIN TITLE</span>
+                            <input id="inp-title" class="styled-input" value="MATCH 22" oninput="app.sync()">
+                        </div>
+                        <div class="toggle-row" id="tog-banner" onclick="app.toggle('banner')">
+                            <span class="t-label">SHOW MATCH BANNER</span>
+                            <span class="t-state">OFF</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-panel">
+                    <div class="cp-header">LEADERBOARD</div>
+                    <div class="cp-body">
+                        <div class="toggle-row" id="tog-lb" onclick="app.toggle('lb')">
+                            <span class="t-label">SHOW LEADERBOARD</span>
+                            <span class="t-state">OFF</span>
+                        </div>
+                        <button class="btn-reset" onclick="app.reset()">RESET ALL DATA</button>
+                    </div>
+                </div>
+
             </div>
+
+            <div class="preview-section hidden" id="sec-teams" style="background:#111; border:1px solid #333; padding:20px; overflow-y:auto;">
+                <div class="cp-header" style="border:none;">TEAM DATA EDITOR</div>
+                <div id="editor-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap:15px; margin-top:20px;"></div>
+            </div>
+
         </div>
     </div>
 
     <div id="live-view">
-        <button id="btn-start-live"><i class="fa-solid fa-play"></i> START BROADCAST FEED</button>
-        <div id="live-stage" class="graphics-layer"></div>
+        <button class="btn-live-start" id="btn-live-start" onclick="app.startLiveSource()">
+            <i class="fa-solid fa-play"></i> START BROADCAST FEED
+        </button>
+        <div class="gfx-layer" id="live-gfx-layer"></div>
     </div>
 
     <script>
-        // --- LOGGER ---
-        function log(msg) {
-            const el = document.getElementById('system-log');
-            const time = new Date().toLocaleTimeString();
-            el.innerHTML += `[${time}] ${msg}<br>`;
-            el.scrollTop = el.scrollHeight;
-        }
-
-        // --- FIREBASE CONFIG (USER PROVIDED) ---
+        // --- CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyBDyzJM5aEs0ZA08Q4vMefAUDp6Vjk-rUM",
             authDomain: "esports-manager-ab9d4.firebaseapp.com",
@@ -289,70 +295,29 @@
 
         // --- APP LOGIC ---
         const App = {
-            state: { banner: false, lb: false, sub: "GROUP A", title: "MATCH 1", teams: TEAMS_INIT },
+            state: { banner: false, lb: false, sub: "W4 - DAY 4", title: "MATCH 1", teams: TEAMS_INIT },
             mode: null,
             db: null,
             ref: null,
 
-            async start() {
+            async init() {
                 try {
-                    log("Connecting to Firebase...");
                     firebase.initializeApp(firebaseConfig);
                     this.db = firebase.database();
-                    this.ref = this.db.ref('esports_data_v1');
+                    this.ref = this.db.ref('esports_prod_v9');
 
-                    // Check connection
-                    const connectedRef = this.db.ref('.info/connected');
-                    connectedRef.on('value', (snap) => {
-                        if (snap.val() === true) {
-                            log("Connected to Cloud.");
-                            this.enableButtons();
-                            this.updateStatus(true);
-                        } else {
-                            log("Disconnected. Retrying...");
-                            this.updateStatus(false);
-                        }
-                    });
-
-                    // Listen for Data
                     this.ref.on('value', (snap) => {
                         const val = snap.val();
                         if(val) {
                             this.state = val;
-                            this.renderGraphics();
-                            if(this.mode === 'admin') this.renderAdmin();
+                            this.renderAll();
                         } else {
-                            log("No data found. creating default...");
                             this.sync();
                         }
                     });
+                } catch(e) { console.error("Firebase Error", e); }
 
-                } catch(e) {
-                    log("ERROR: " + e.message);
-                }
-            },
-
-            enableButtons() {
-                const btnA = document.getElementById('btn-login-admin');
-                const btnL = document.getElementById('btn-login-live');
-                
-                btnA.disabled = false;
-                btnA.innerHTML = '<i class="fa-solid fa-laptop-code"></i> ADMIN PANEL';
-                btnA.onclick = () => this.enter('admin');
-
-                btnL.disabled = false;
-                btnL.innerHTML = '<i class="fa-solid fa-satellite-dish"></i> LIVE SCREEN';
-                btnL.onclick = () => this.enter('live');
-            },
-
-            updateStatus(online) {
-                const txt = document.getElementById('status-text');
-                const dot = document.getElementById('status-dot');
-                if(txt && dot) {
-                    txt.innerText = online ? "CONNECTED" : "OFFLINE";
-                    txt.style.color = online ? "#0f0" : "#f00";
-                    if(online) dot.classList.add('online'); else dot.classList.remove('online');
-                }
+                window.addEventListener('resize', () => { if(this.mode==='admin') this.fitPreview(); });
             },
 
             enter(mode) {
@@ -361,219 +326,179 @@
                 
                 if(mode === 'admin') {
                     document.getElementById('admin-view').style.display = 'flex';
-                    this.setupGraphicsDOM(document.getElementById('preview-stage'));
-                    this.attachAdminEvents();
-                    this.renderAdmin();
-                    setTimeout(() => this.fitPreview(), 200);
-                    window.addEventListener('resize', () => this.fitPreview());
+                    this.setupGraphics(document.getElementById('preview-stage'));
+                    this.renderAll();
+                    setTimeout(() => this.fitPreview(), 100);
                 } else {
-                    document.getElementById('live-view').style.display = 'flex';
-                    this.setupGraphicsDOM(document.getElementById('live-stage'));
-                    document.getElementById('btn-start-live').onclick = () => this.startScreenShare('live');
+                    document.getElementById('live-view').style.display = 'block';
+                    this.setupGraphics(document.getElementById('live-gfx-layer'));
                 }
             },
 
             sync() {
-                this.ref.set(this.state).catch(e => console.error(e));
+                if(this.mode === 'admin') {
+                    this.state.sub = document.getElementById('inp-sub').value;
+                    this.state.title = document.getElementById('inp-title').value;
+                }
+                this.ref.set(this.state);
             },
 
-            // --- ADMIN LOGIC ---
-            attachAdminEvents() {
-                // Tabs
-                document.getElementById('btn-tab-ctrl').onclick = () => {
-                    document.getElementById('section-control').style.display = 'flex';
-                    document.getElementById('section-leaderboard').style.display = 'none';
-                    document.getElementById('btn-tab-ctrl').classList.add('active');
-                    document.getElementById('btn-tab-team').classList.remove('active');
+            toggle(key) { this.state[key] = !this.state[key]; this.sync(); },
+            
+            reset() {
+                if(confirm("Reset everything?")) {
+                    this.state.teams = JSON.parse(JSON.stringify(TEAMS_INIT));
+                    this.state.banner = false; this.state.lb = false;
+                    this.sync();
+                }
+            },
+
+            switchTab(tab) {
+                const prev = document.getElementById('sec-preview');
+                const ctrls = document.getElementById('sec-controls');
+                const teams = document.getElementById('sec-teams');
+                const navC = document.querySelectorAll('.nav-item')[0];
+                const navT = document.querySelectorAll('.nav-item')[1];
+
+                if(tab === 'control') {
+                    prev.classList.remove('hidden'); ctrls.classList.remove('hidden'); teams.classList.add('hidden');
+                    navC.classList.add('active'); navT.classList.remove('active');
                     setTimeout(() => this.fitPreview(), 50);
-                };
-                document.getElementById('btn-tab-team').onclick = () => {
-                    document.getElementById('section-control').style.display = 'none';
-                    document.getElementById('section-leaderboard').style.display = 'block';
-                    document.getElementById('btn-tab-ctrl').classList.remove('active');
-                    document.getElementById('btn-tab-team').classList.add('active');
-                };
-                document.getElementById('btn-exit').onclick = () => location.reload();
+                } else {
+                    prev.classList.add('hidden'); ctrls.classList.add('hidden'); teams.classList.remove('hidden');
+                    navC.classList.remove('active'); navT.classList.add('active');
+                    this.renderEditor();
+                }
+            },
 
-                // Inputs
-                document.getElementById('inp-sub').oninput = (e) => { this.state.sub = e.target.value; this.sync(); };
-                document.getElementById('inp-title').oninput = (e) => { this.state.title = e.target.value; this.sync(); };
+            // --- RENDERERS ---
+            renderAll() {
+                this.renderGraphics();
+                if(this.mode === 'admin') {
+                    this.renderControls();
+                    // Don't re-render editor constantly if typing
+                    if(!document.querySelector('.editor-input:focus')) this.renderEditor();
+                }
+            },
 
+            renderControls() {
                 // Toggles
-                document.getElementById('tog-banner').onclick = () => { this.state.banner = !this.state.banner; this.sync(); };
-                document.getElementById('tog-lb').onclick = () => { this.state.lb = !this.state.lb; this.sync(); };
-                document.getElementById('btn-reset').onclick = () => {
-                    if(confirm("Reset everything?")) {
-                        this.state.teams = JSON.parse(JSON.stringify(TEAMS_INIT));
-                        this.state.banner = false; this.state.lb = false;
-                        this.sync();
-                    }
-                };
+                const bTog = document.getElementById('tog-banner');
+                const lTog = document.getElementById('tog-lb');
                 
-                // Preview Connect
-                document.getElementById('btn-connect-preview').onclick = () => this.startScreenShare('preview');
+                if(this.state.banner) { bTog.classList.add('active'); bTog.querySelector('.t-state').innerText="ON"; }
+                else { bTog.classList.remove('active'); bTog.querySelector('.t-state').innerText="OFF"; }
+
+                if(this.state.lb) { lTog.classList.add('active'); lTog.querySelector('.t-state').innerText="ON"; }
+                else { lTog.classList.remove('active'); lTog.querySelector('.t-state').innerText="OFF"; }
+
+                // Inputs (Update only if not focused)
+                const sInp = document.getElementById('inp-sub');
+                const tInp = document.getElementById('inp-title');
+                if(document.activeElement !== sInp) sInp.value = this.state.sub;
+                if(document.activeElement !== tInp) tInp.value = this.state.title;
             },
 
-            renderAdmin() {
-                // Update Inputs
-                const sub = document.getElementById('inp-sub');
-                const tit = document.getElementById('inp-title');
-                if(document.activeElement !== sub) sub.value = this.state.sub;
-                if(document.activeElement !== tit) tit.value = this.state.title;
-
-                // Update Toggles
-                const bBtn = document.getElementById('tog-banner');
-                if(this.state.banner) { bBtn.classList.add('active'); bBtn.querySelector('.t-stat').innerText="ON"; }
-                else { bBtn.classList.remove('active'); bBtn.querySelector('.t-stat').innerText="OFF"; }
-
-                const lBtn = document.getElementById('tog-lb');
-                if(this.state.lb) { lBtn.classList.add('active'); lBtn.querySelector('.t-stat').innerText="ON"; }
-                else { lBtn.classList.remove('active'); lBtn.querySelector('.t-stat').innerText="OFF"; }
-
-                // Render Editor
+            renderEditor() {
                 const grid = document.getElementById('editor-grid');
-                grid.innerHTML = '';
-                // Clone and sort for display
-                const sorted = this.state.teams.map((t, i) => ({...t, origIdx: i})).sort((a,b) => b.points - a.points);
-                
-                sorted.forEach((t, i) => {
-                    const wiped = t.p.every(x => x === 0);
-                    // Create Card
-                    const card = document.createElement('div');
-                    card.className = `t-card ${wiped?'wiped':''}`;
-                    
-                    card.innerHTML = `
-                        <div class="tc-top">
-                            <span class="tc-rank">#${i + 1}</span>
-                            <input class="tc-name" value="${t.name}">
-                        </div>
-                        <div class="tc-mid">
-                            <div class="sc-box"><span class="sc-val">K: ${t.kills}</span></div>
-                            <div class="sc-box"><span class="sc-val" style="color:#eaff00">P: ${t.points}</span></div>
-                        </div>
-                        <div class="tc-bot"></div>
-                    `;
-
-                    // Bind Name
-                    card.querySelector('.tc-name').onchange = (e) => { this.state.teams[t.origIdx].name = e.target.value; this.sync(); };
-                    
-                    // Bind Kills/Points (Using simple prompts for mobile ease, or custom logic)
-                    // For simplicity in this robust version, we use simple clicks to increment/decrement? 
-                    // Let's stick to standard inputs for robustness
-                    const kInp = document.createElement('input'); kInp.type="number"; kInp.className="sc-val"; kInp.value=t.kills;
-                    kInp.onchange = (e) => { this.state.teams[t.origIdx].kills = parseInt(e.target.value); this.sync(); };
-                    card.querySelectorAll('.sc-box')[0].innerHTML = `<span style="font-size:8px; color:#666">KILLS</span>`;
-                    card.querySelectorAll('.sc-box')[0].appendChild(kInp);
-
-                    const pInp = document.createElement('input'); pInp.type="number"; pInp.className="sc-val"; pInp.value=t.points; pInp.style.color="#eaff00";
-                    pInp.onchange = (e) => { this.state.teams[t.origIdx].points = parseInt(e.target.value); this.sync(); };
-                    card.querySelectorAll('.sc-box')[1].innerHTML = `<span style="font-size:8px; color:#666">PTS</span>`;
-                    card.querySelectorAll('.sc-box')[1].appendChild(pInp);
-
-                    // Player Buttons
-                    const bot = card.querySelector('.tc-bot');
-                    t.p.forEach((status, pIdx) => {
-                        const btn = document.createElement('div');
-                        btn.className = `p-btn ${status===1?'alive':'dead'}`;
-                        btn.innerText = `P${pIdx+1}`;
-                        btn.onclick = () => {
-                            this.state.teams[t.origIdx].p[pIdx] = status === 1 ? 0 : 1;
-                            this.sync();
-                        };
-                        bot.appendChild(btn);
+                if(grid.innerHTML === "") { // Basic check to avoid redraw spam
+                    grid.innerHTML = ''; 
+                    this.state.teams.forEach((t, i) => {
+                        const div = document.createElement('div');
+                        div.style.background = '#050505'; div.style.padding='10px'; div.style.border='1px solid #333';
+                        div.innerHTML = `
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                                <span style="font-weight:bold; color:#666">#${i+1}</span>
+                                <input class="styled-input editor-input" value="${t.name}" style="width:120px; padding:5px;" onchange="app.updTeam(${i}, 'name', this.value)">
+                            </div>
+                            <div style="display:flex; gap:5px;">
+                                <input type="number" class="styled-input editor-input" value="${t.kills}" style="width:50%" onchange="app.updTeam(${i}, 'kills', this.value)">
+                                <input type="number" class="styled-input editor-input" value="${t.points}" style="width:50%; color:var(--accent-yellow)" onchange="app.updTeam(${i}, 'points', this.value)">
+                            </div>
+                            <div style="display:flex; gap:2px; margin-top:5px;">
+                                ${t.p.map((s, pi) => `<div onclick="app.togP(${i},${pi})" style="flex:1; text-align:center; cursor:pointer; font-size:10px; padding:5px; background:${s?'#222':'#300'}; color:${s?'#fff':'#f55'}; border:1px solid #333">${pi+1}</div>`).join('')}
+                            </div>
+                        `;
+                        grid.appendChild(div);
                     });
-
-                    grid.appendChild(card);
-                });
+                }
             },
 
-            // --- GRAPHICS ---
-            setupGraphicsDOM(container) {
-                container.innerHTML = `
-                    <div class="gfx-banner">
-                        <div class="ban-box"><img src="https://cdn-icons-png.flaticon.com/512/168/168732.png" width="50"></div>
-                        <div class="ban-txt"><div class="b-sub"></div><div class="b-main"></div></div>
+            updTeam(i, k, v) { this.state.teams[i][k] = (k==='name'?v:parseInt(v)); this.sync(); },
+            togP(i, pi) { this.state.teams[i].p[pi] = this.state.teams[i].p[pi]?0:1; this.sync(); this.renderEditor(); },
+
+            setupGraphics(stage) {
+                stage.innerHTML = `
+                    <div class="banner-gfx">
+                        <div class="ban-icon"><img src="https://cdn-icons-png.flaticon.com/512/168/168732.png" width="60"></div>
+                        <div class="ban-content"><div class="ban-sub"></div><div class="ban-main"></div></div>
                     </div>
-                    <div class="gfx-lb">
-                        <div class="lb-h"><span class="lb-title">STANDINGS</span><span class="lb-tag">LIVE</span></div>
-                        <table class="lb-tab"><thead><tr><th>#</th><th>TEAM</th><th>K</th><th>PTS</th><th>STS</th></tr></thead><tbody></tbody></table>
+                    <div class="lb-gfx">
+                        <div class="lb-header"><span class="lb-title">STANDINGS</span><span class="lb-badge">LIVE</span></div>
+                        <table class="lb-table"><thead><tr><th>#</th><th>TEAM</th><th>K</th><th>PTS</th><th>STS</th></tr></thead><tbody></tbody></table>
                     </div>
                 `;
             },
 
             renderGraphics() {
                 const stages = [];
-                if(this.mode === 'live') stages.push(document.getElementById('live-stage'));
                 if(this.mode === 'admin') stages.push(document.getElementById('preview-stage'));
+                if(this.mode === 'live') stages.push(document.getElementById('live-gfx-layer'));
 
-                stages.forEach(stage => {
-                    const ban = stage.querySelector('.gfx-banner');
-                    if(ban) {
-                        ban.querySelector('.b-sub').innerText = this.state.sub;
-                        ban.querySelector('.b-main').innerText = this.state.title;
-                        if(this.state.banner) ban.classList.add('show'); else ban.classList.remove('show');
-                    }
+                stages.forEach(el => {
+                    const ban = el.querySelector('.banner-gfx');
+                    ban.querySelector('.ban-sub').innerText = this.state.sub;
+                    ban.querySelector('.ban-main').innerText = this.state.title;
+                    if(this.state.banner) ban.classList.add('visible'); else ban.classList.remove('visible');
 
-                    const lb = stage.querySelector('.gfx-lb');
-                    if(lb) {
-                        if(this.state.lb) lb.classList.add('show'); else lb.classList.remove('show');
-                        
-                        const tbody = lb.querySelector('tbody');
-                        const sorted = [...this.state.teams].sort((a,b) => b.points - a.points);
-                        let html = '';
-                        
-                        sorted.forEach((t, i) => {
-                            const wiped = t.p.every(x => x === 0);
-                            const bars = t.p.map(s => `<div class="bar ${s===0?'dead':''}"></div>`).join('');
-                            html += `
-                                <tr class="lb-r in ${wiped?'out':''}">
-                                    <td style="color:#666; font-family:'Teko'; font-size:20px;">${i+1}</td>
-                                    <td style="color:white; font-weight:bold; padding-left:5px;">${t.name}</td>
-                                    <td style="color:#ccc; font-weight:bold;">${t.kills}</td>
-                                    <td style="color:var(--accent-yellow); font-family:'Teko'; font-size:22px;">${t.points}</td>
-                                    <td><div class="s-bars">${bars}</div></td>
-                                </tr>
-                            `;
-                        });
-                        tbody.innerHTML = html;
-                    }
+                    const lb = el.querySelector('.lb-gfx');
+                    if(this.state.lb) lb.classList.add('visible'); else lb.classList.remove('visible');
+
+                    const tbody = el.querySelector('tbody');
+                    const sorted = [...this.state.teams].sort((a,b) => b.points - a.points);
+                    tbody.innerHTML = sorted.map((t, i) => `
+                        <tr class="lb-row show ${t.p.every(x=>x===0)?'wiped':''}">
+                            <td style="color:#666">${i+1}</td>
+                            <td style="text-align:left; padding-left:10px;">${t.name}</td>
+                            <td style="color:#aaa">${t.kills}</td>
+                            <td style="color:var(--accent-yellow); font-size:18px;">${t.points}</td>
+                            <td><div class="s-dots">${t.p.map(s=>`<div class="dot ${s?'':'out'}"></div>`).join('')}</div></td>
+                        </tr>
+                    `).join('');
                 });
             },
 
             fitPreview() {
-                const c = document.getElementById('preview-container');
-                const s = document.getElementById('preview-stage');
-                if(c && s) {
-                    const scale = Math.min(c.clientWidth/1920, c.clientHeight/1080) * 0.95;
-                    s.style.transform = `scale(${scale})`;
-                }
+                const box = document.getElementById('preview-container');
+                const stage = document.getElementById('preview-stage');
+                if(!box || !stage) return;
+                const scale = Math.min(box.clientWidth/1920, box.clientHeight/1080) * 0.95;
+                stage.style.transform = `scale(${scale})`;
             },
 
-            async startScreenShare(target) {
+            // --- SCREEN SHARE ---
+            async startPreviewSource() {
                 try {
-                    const stream = await navigator.mediaDevices.getDisplayMedia({video: {cursor: "always"}, audio: false});
-                    const vid = document.createElement('video');
-                    vid.className = "bg-video";
-                    vid.srcObject = stream;
-                    vid.autoplay = true;
+                    const stream = await navigator.mediaDevices.getDisplayMedia({video: {cursor:"always"}, audio:false});
+                    const v = document.createElement('video'); v.id = "admin-video-feed";
+                    v.srcObject = stream; v.autoplay = true;
+                    document.getElementById('preview-stage').prepend(v);
+                    document.getElementById('preview-overlay').style.display = 'none';
+                } catch(e) { alert("Preview requires HTTPS or Localhost."); }
+            },
 
-                    if(target === 'live') {
-                        document.getElementById('live-view').appendChild(vid);
-                        document.getElementById('btn-start-live').style.display = 'none';
-                    } else {
-                        // For Admin Preview, put it behind graphics
-                        document.getElementById('preview-stage').prepend(vid);
-                        document.getElementById('btn-connect-preview').style.display = 'none';
-                    }
-                } catch(e) {
-                    alert("Screen Share Error: " + e.message);
-                }
+            async startLiveSource() {
+                try {
+                    const stream = await navigator.mediaDevices.getDisplayMedia({video: {cursor:"always"}, audio:false});
+                    const v = document.createElement('video'); v.id = "live-video-feed";
+                    v.srcObject = stream; v.autoplay = true;
+                    document.getElementById('live-view').insertBefore(v, document.getElementById('live-gfx-layer'));
+                    document.getElementById('btn-live-start').style.display = 'none';
+                } catch(e) { alert("Live feed requires HTTPS or Localhost."); }
             }
         };
 
-        // Start
-        window.addEventListener('DOMContentLoaded', () => App.start());
-
+        window.onload = () => App.init();
     </script>
 </body>
 </html>
